@@ -35,11 +35,40 @@ export function TransactionProvider({ children }) {
     keyword: '',
     message: '',
   });
+  const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(false);
 
   function handleChange(e, name) {
     // If we pass a function to setFormData state function, we can get the prevState (didn't remember that)
     setFormData((prevState) => ({ ...prevState, [name]: e.target.value }));
+  }
+
+  async function getAllTransactions() {
+    try {
+      if (!ethereum) return alert('Please install MetaMask');
+      const transactionContract = getEthereumContract();
+      const availableTransactions =
+        await transactionContract.getAllTransactions();
+      const structuredTransactions = availableTransactions.map(
+        (transaction) => ({
+          addressTo: transaction.receiver,
+          addressFrom: transaction.sender,
+          timestamp: new Date(
+            transaction.timestamp.toNumber() * 1000
+          ).toLocaleString(),
+          message: transaction.message,
+          keyword: transaction.keyword,
+          // the amount cames in Gwei, to transform to ETH we need to multiply 10 power of 18
+          amount: Number(transaction.amount._hex) / 10 ** 18,
+        })
+      );
+
+      console.log(structuredTransactions);
+
+      setTransactions(structuredTransactions);
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   async function checkIfWalletIsConnected() {
@@ -48,10 +77,22 @@ export function TransactionProvider({ children }) {
       const accounts = await ethereum.request({ method: 'eth_accounts' });
       if (accounts.length) {
         setCurrentAccount(accounts[0]);
-        // getAllTransactions();
+        getAllTransactions();
       } else {
         console.log('No accounts found');
       }
+    } catch (err) {
+      console.log(err);
+      throw new Error('No ethereum object.');
+    }
+  }
+
+  async function checkIfTransactionsExist() {
+    try {
+      const transactionContract = getEthereumContract();
+      const transactionCount = await transactionContract.getTransactionCount();
+
+      window.localStorage.setItem('transactionCount', transactionCount);
     } catch (err) {
       console.log(err);
       throw new Error('No ethereum object.');
@@ -120,6 +161,8 @@ export function TransactionProvider({ children }) {
       const transactionCount = await transactionContract.getTransactionCount();
 
       setTransactionCount(transactionCount.toNumber());
+
+      window.reload();
     } catch (err) {
       console.log(err);
 
@@ -129,6 +172,7 @@ export function TransactionProvider({ children }) {
 
   useEffect(() => {
     checkIfWalletIsConnected();
+    checkIfTransactionsExist();
   }, []);
 
   return (
@@ -139,6 +183,8 @@ export function TransactionProvider({ children }) {
         formData,
         handleChange,
         sendTransaction,
+        transactions,
+        loading,
       }}
     >
       {children}
