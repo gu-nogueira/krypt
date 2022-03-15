@@ -1,9 +1,17 @@
-import { Header, Footer, Welcome, Services, Transactions } from './components';
+import {
+  Modal,
+  Header,
+  Footer,
+  Welcome,
+  Services,
+  Transactions,
+} from './components';
 
 function App() {
   return (
     <div className="min-h-screen">
       <div className="gradient-bg-welcome">
+        <Modal />
         <Header />
         <Welcome />
       </div>

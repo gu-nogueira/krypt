@@ -30,7 +30,7 @@ const TransactionCard = ({
         {/* "mb-6": margin-bottom 6 */}
         <div className="w-full mb-6 p-2">
           <a
-            href={`https://rospten.etherscan.io/address/${addressFrom}`}
+            href={`https://ropsten.etherscan.io/address/${addressFrom}`}
             target="_blank"
             // recommended when using target blank
             rel="noopener noreferrer"
@@ -40,7 +40,7 @@ const TransactionCard = ({
             </p>
           </a>
           <a
-            href={`https://rospten.etherscan.io/address/${addressTo}`}
+            href={`https://ropsten.etherscan.io/address/${addressTo}`}
             target="_blank"
             // recommended when using target blank
             rel="noopener noreferrer"

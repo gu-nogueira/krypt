@@ -1,6 +1,8 @@
 // We no longer need to import 'React' in '.jsx' files
 import { useState } from 'react';
 
+import { Modal } from './';
+
 import { HiMenuAlt4 } from 'react-icons/hi';
 import { AiOutlineClose } from 'react-icons/ai';
 
@@ -29,7 +31,17 @@ function Header() {
           <HeaderItem key={item + index} title={item} />
         ))}
         {/* 'py-...': top and bottom padding */}
-        <li className="bg-[#2952e3] py-2 px-7 mx-4 rounded cursor-pointer hover:bg-[#2546bd]">
+        <li
+          className="bg-[#2952e3] py-2 px-7 mx-4 rounded cursor-pointer hover:bg-[#2546bd]"
+          onClick={async () =>
+            Modal.show({
+              title: `Please install Metamask`,
+              content: <p>Metamask in needed to run this application.</p>,
+              cta: 'Go to webstore',
+              resolver: () => 0,
+            })
+          }
+        >
           Login
         </li>
       </ul>

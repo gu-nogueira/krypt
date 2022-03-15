@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 
+import { Modal } from '../components';
+
 import { contractABI, contractAddress } from '../utils/constants';
 
 // We're gonna use React Context API exclusively for connecting in the blockchain
@@ -73,7 +75,19 @@ export function TransactionProvider({ children }) {
 
   async function checkIfWalletIsConnected() {
     try {
-      if (!ethereum) return alert('Please install MetaMask');
+      if (!ethereum)
+        // return async () =>
+        //   Modal.show({
+        //     title: `Please install Metamask`,
+        //     content: (
+        //       <>
+        //         <p>Metamask in needed to run this application.</p>
+        //       </>
+        //     ),
+        //     cta: 'Go to webstore',
+        //     resolver: () => 0,
+        //   });
+        return alert('Aaaaaaaaaaaaaaaaa');
       const accounts = await ethereum.request({ method: 'eth_accounts' });
       if (accounts.length) {
         setCurrentAccount(accounts[0]);
