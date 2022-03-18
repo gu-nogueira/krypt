@@ -87,7 +87,7 @@ export function TransactionProvider({ children }) {
         //     cta: 'Go to webstore',
         //     resolver: () => 0,
         //   });
-        return alert('Aaaaaaaaaaaaaaaaa');
+        return alert('Please install MetaMask');
       const accounts = await ethereum.request({ method: 'eth_accounts' });
       if (accounts.length) {
         setCurrentAccount(accounts[0]);
