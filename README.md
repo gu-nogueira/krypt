@@ -26,3 +26,12 @@ cd ./smart_contract && npx hardhat run scripts/deploy.js --network ropsten
 - [Ropsten faucet](https://faucet.egorfine.com/)
 - [Alchemy](https://alchemy.com/)
 - 
+
+### Important
+For frontend deploy, necessary to change `vite.config.js`:
+```js
+export default defineConfig({
+  base: '/krypt/',
+  plugins: [react()],
+});
+```
